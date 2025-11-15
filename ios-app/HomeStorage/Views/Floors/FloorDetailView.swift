@@ -3,7 +3,7 @@ import SwiftUI
 struct FloorDetailView: View {
     let floor: Floor
     @StateObject private var apiService = APIService()
-    @State private var floorDetail: APIService.FloorDetailResponse?
+    @State private var floorDetail: FloorDetailResponse?
     @State private var isLoading = true
     @State private var showingAddRoom = false
     @State private var editingRoom: Room?

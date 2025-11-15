@@ -68,11 +68,6 @@ class APIService: ObservableObject {
         return try await request(endpoint: "/floors/\(id)")
     }
     
-    struct FloorDetailResponse: Codable {
-        let floor: Floor
-        let rooms: [Room]
-    }
-    
     // MARK: - Rooms
     
     func fetchRooms() async throws -> [Room] {
@@ -159,5 +154,10 @@ class APIService: ObservableObject {
         struct EmptyResponse: Codable {}
         let _: EmptyResponse = try await request(endpoint: "/items/\(id)", method: "DELETE")
     }
+}
+
+struct FloorDetailResponse: Codable {
+    let floor: Floor
+    let rooms: [Room]
 }
 
