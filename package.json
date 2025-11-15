@@ -1,0 +1,51 @@
+{
+  "name": "home-storage-manager",
+  "version": "1.0.0",
+  "description": "Home storage management system with PostgreSQL and mobile-friendly web interface",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/home-storage-manager.git"
+  },
+  "keywords": [
+    "storage",
+    "inventory",
+    "home-management",
+    "postgresql",
+    "nextjs",
+    "docker"
+  ],
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up -d"
+  },
+  "dependencies": {
+    "next": "^14.0.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "pg": "^8.11.3",
+    "lucide-react": "^0.294.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@types/pg": "^8.10.9",
+    "typescript": "^5.3.3",
+    "tailwindcss": "^3.3.6",
+    "postcss": "^8.4.32",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4"
+  }
+}
+
