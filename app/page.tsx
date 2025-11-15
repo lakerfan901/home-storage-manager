@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Home, Box, Package, Layers, MapPin } from 'lucide-react'
+import { Box, Package, Layers, MapPin } from 'lucide-react'
 
 interface Floor {
   id: string
