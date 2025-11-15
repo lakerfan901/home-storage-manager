@@ -1,8 +1,26 @@
 import { NextResponse } from 'next/server'
 import db from '@/lib/db'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url)
+    const nfcTagId = searchParams.get('nfc_tag_id')
+    
+    if (nfcTagId) {
+      // Lookup box by NFC tag ID
+      const result = await db.query(
+        'SELECT * FROM box_locations WHERE nfc_tag_id = $1',
+        [nfcTagId]
+      )
+      
+      if (result.rows.length === 0) {
+        return NextResponse.json({ error: 'Box not found' }, { status: 404 })
+      }
+      
+      return NextResponse.json(result.rows[0])
+    }
+    
+    // Get all boxes
     const result = await db.query(`
       SELECT * FROM box_locations
       ORDER BY floor_level, room_name, rack_name, box_name
