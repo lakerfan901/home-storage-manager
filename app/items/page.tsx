@@ -79,12 +79,12 @@ export default function ItemsPage() {
             onClick={() => router.back()}
             className="flex items-center space-x-2 text-gray-600 mb-3"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>Back</span>
           </button>
           <h1 className="text-2xl font-bold text-gray-900 mb-3">All Items</h1>
           <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
             <input
               type="text"
               placeholder="Search items..."
@@ -115,7 +115,7 @@ export default function ItemsPage() {
                       : 'bg-gray-100 text-gray-700'
                   }`}
                 >
-                  <Tag className="w-3 h-3" />
+                  <Tag className="w-3 h-3" aria-hidden="true" />
                   <span>{tag}</span>
                 </button>
               ))}
@@ -135,7 +135,7 @@ export default function ItemsPage() {
           </div>
         ) : filteredItems.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center shadow-sm">
-            <Package className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <Package className="w-12 h-12 text-gray-400 mx-auto mb-3" aria-hidden="true" />
             <p className="text-gray-500">
               {searchQuery || selectedTag
                 ? 'No items found matching your filters'
@@ -153,26 +153,26 @@ export default function ItemsPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-3 flex-1">
                     <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Package className="w-5 h-5 text-primary-600" />
+                      <Package className="w-5 h-5 text-primary-600" aria-hidden="true" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
-                        <div className="font-semibold text-gray-900">{item.item_name}</div>
+                        <div className="font-semibold text-gray-900 truncate">{item.item_name}</div>
                         {item.quantity > 1 && (
                           <span className="bg-primary-100 text-primary-700 text-xs px-2 py-0.5 rounded-full">
                             x{item.quantity}
                           </span>
                         )}
                         {item.item_tag && (
-                          <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                          <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full flex-shrink-0">
                             {item.item_tag}
                           </span>
                         )}
                       </div>
                       {item.item_description && (
-                        <div className="text-sm text-gray-600 mb-1">{item.item_description}</div>
+                        <div className="text-sm text-gray-600 mb-1 truncate">{item.item_description}</div>
                       )}
-                      <div className="text-xs text-gray-500 capitalize">
+                      <div className="text-xs text-gray-500 capitalize truncate">
                         {item.floor_name} → {item.room_name}
                         {item.rack_name && ` → ${item.rack_name}`} →{' '}
                         {item.box_name || 'Box'}

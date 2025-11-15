@@ -60,7 +60,7 @@ export default function RoomPage() {
             onClick={() => router.back()}
             className="flex items-center space-x-2 text-gray-600 mb-2"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>Back</span>
           </button>
           <h1 className="text-2xl font-bold text-gray-900">
@@ -94,12 +94,12 @@ export default function RoomPage() {
                       className="bg-white rounded-xl p-4 shadow-sm flex items-center space-x-3"
                     >
                       <div className="w-10 h-10 bg-indigo-100 rounded-lg flex items-center justify-center">
-                        <Layers className="w-5 h-5 text-indigo-600" />
+                        <Layers className="w-5 h-5 text-indigo-600" aria-hidden="true" />
                       </div>
-                      <div className="flex-1">
-                        <div className="font-semibold text-gray-900">{rack.name}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-semibold text-gray-900 truncate">{rack.name}</div>
                         {rack.description && (
-                          <div className="text-sm text-gray-500">{rack.description}</div>
+                          <div className="text-sm text-gray-500 truncate">{rack.description}</div>
                         )}
                       </div>
                     </div>
@@ -115,7 +115,7 @@ export default function RoomPage() {
               </h2>
               {boxes.length === 0 ? (
                 <div className="bg-white rounded-xl p-8 text-center shadow-sm">
-                  <Box className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                  <Box className="w-12 h-12 text-gray-400 mx-auto mb-3" aria-hidden="true" />
                   <p className="text-gray-500">No boxes in this room yet</p>
                 </div>
               ) : (
@@ -128,19 +128,19 @@ export default function RoomPage() {
                     >
                       <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                          <Box className="w-5 h-5 text-primary-600" />
+                          <Box className="w-5 h-5 text-primary-600" aria-hidden="true" />
                         </div>
-                        <div>
-                          <div className="font-semibold text-gray-900">
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-gray-900 truncate">
                             {box.name || `Box ${box.nfc_tag_id.slice(0, 8)}`}
                           </div>
                           {box.description && (
-                            <div className="text-sm text-gray-500">{box.description}</div>
+                            <div className="text-sm text-gray-500 truncate">{box.description}</div>
                           )}
-                          <div className="text-xs text-gray-400 mt-1">NFC: {box.nfc_tag_id}</div>
+                          <div className="text-xs text-gray-400 mt-1 truncate">NFC: {box.nfc_tag_id}</div>
                         </div>
                       </div>
-                      <Package className="w-5 h-5 text-gray-400" />
+                      <Package className="w-5 h-5 text-gray-400" aria-hidden="true" />
                     </Link>
                   ))}
                 </div>

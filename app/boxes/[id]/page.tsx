@@ -89,14 +89,14 @@ export default function BoxPage() {
             onClick={() => router.back()}
             className="flex items-center space-x-2 text-gray-600 mb-2"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>Back</span>
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-gray-900 truncate">
             {loading ? 'Loading...' : box?.box_name || `Box ${box?.nfc_tag_id.slice(0, 8)}`}
           </h1>
           {box && (
-            <p className="text-sm text-gray-500 capitalize">
+            <p className="text-sm text-gray-500 capitalize truncate">
               {box.floor_name} → {box.room_name}
               {box.rack_name && ` → ${box.rack_name}`}
             </p>
@@ -185,7 +185,7 @@ export default function BoxPage() {
                   onClick={() => setShowAddItem(true)}
                   className="flex items-center space-x-2 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium active:scale-95"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-4 h-4" aria-hidden="true" />
                   <span>Add Item</span>
                 </button>
               )}
@@ -193,7 +193,7 @@ export default function BoxPage() {
 
             {items.length === 0 ? (
               <div className="bg-white rounded-xl p-8 text-center shadow-sm">
-                <Package className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                <Package className="w-12 h-12 text-gray-400 mx-auto mb-3" aria-hidden="true" />
                 <p className="text-gray-500">No items in this box yet</p>
               </div>
             ) : (
@@ -203,29 +203,30 @@ export default function BoxPage() {
                     key={item.id}
                     className="bg-white rounded-xl p-4 shadow-sm flex items-start justify-between"
                   >
-                    <div className="flex-1">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center space-x-2 mb-1">
-                        <div className="font-semibold text-gray-900">{item.name}</div>
+                        <div className="font-semibold text-gray-900 truncate">{item.name}</div>
                         {item.quantity > 1 && (
-                          <span className="bg-primary-100 text-primary-700 text-xs px-2 py-0.5 rounded-full">
+                          <span className="bg-primary-100 text-primary-700 text-xs px-2 py-0.5 rounded-full flex-shrink-0">
                             x{item.quantity}
                           </span>
                         )}
                         {item.tag && (
-                          <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                          <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full flex-shrink-0">
                             {item.tag}
                           </span>
                         )}
                       </div>
                       {item.description && (
-                        <div className="text-sm text-gray-600">{item.description}</div>
+                        <div className="text-sm text-gray-600 truncate">{item.description}</div>
                       )}
                     </div>
                     <button
                       onClick={() => handleDeleteItem(item.id)}
-                      className="p-2 text-red-500 active:scale-95"
+                      className="p-2 text-red-500 active:scale-95 flex-shrink-0"
+                      aria-label="Delete item"
                     >
-                      <Trash2 className="w-5 h-5" />
+                      <Trash2 className="w-5 h-5" aria-hidden="true" />
                     </button>
                   </div>
                 ))}

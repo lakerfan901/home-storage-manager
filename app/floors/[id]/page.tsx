@@ -50,7 +50,7 @@ export default function FloorPage() {
             onClick={() => router.back()}
             className="flex items-center space-x-2 text-gray-600 mb-2"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>Back</span>
           </button>
           <h1 className="text-2xl font-bold text-gray-900 capitalize">
@@ -70,7 +70,7 @@ export default function FloorPage() {
           </div>
         ) : rooms.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center shadow-sm">
-            <DoorOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <DoorOpen className="w-12 h-12 text-gray-400 mx-auto mb-3" aria-hidden="true" />
             <p className="text-gray-500">No rooms on this floor yet</p>
           </div>
         ) : (
@@ -83,19 +83,19 @@ export default function FloorPage() {
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                    <DoorOpen className="w-5 h-5 text-primary-600" />
+                    <DoorOpen className="w-5 h-5 text-primary-600" aria-hidden="true" />
                   </div>
-                  <div>
-                    <div className="font-semibold text-gray-900">{room.name}</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-semibold text-gray-900 truncate">{room.name}</div>
                     {room.description && (
-                      <div className="text-sm text-gray-500">{room.description}</div>
+                      <div className="text-sm text-gray-500 truncate">{room.description}</div>
                     )}
                     <div className="text-sm text-gray-500 mt-1">
                       {room.box_count} box{room.box_count !== 1 ? 'es' : ''}
                     </div>
                   </div>
                 </div>
-                <Box className="w-5 h-5 text-gray-400" />
+                <Box className="w-5 h-5 text-gray-400" aria-hidden="true" />
               </Link>
             ))}
           </div>

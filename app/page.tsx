@@ -14,6 +14,7 @@ interface Floor {
 export default function Home() {
   const [floors, setFloors] = useState<Floor[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState({
     totalBoxes: 0,
     totalItems: 0,
@@ -31,13 +32,16 @@ export default function Home() {
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({ error: 'Failed to fetch floors' }))
         console.error('Error fetching floors:', errorData)
+        setError('Could not load floors. Pull to refresh or try again later.')
         setFloors([])
         return
       }
       const data = await res.json()
       setFloors(data)
+      setError(null)
     } catch (error) {
       console.error('Error fetching floors:', error)
+      setError('Could not load floors. Pull to refresh or try again later.')
       setFloors([])
     } finally {
       setLoading(false)
@@ -70,8 +74,15 @@ export default function Home() {
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-6">
+        {/* Error Banner */}
+        {error && (
+          <div className="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3">
+            {error}
+          </div>
+        )}
+        
         {/* Stats Cards */}
-        <div className="grid grid-cols-3 gap-3 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
           <div className="bg-white rounded-xl p-4 shadow-sm">
             <div className="text-2xl font-bold text-gray-900">{stats.totalRooms}</div>
             <div className="text-xs text-gray-500 mt-1">Rooms</div>
@@ -94,14 +105,14 @@ export default function Home() {
               href="/boxes"
               className="bg-white rounded-xl p-4 shadow-sm flex items-center space-x-3 active:scale-95 transition-transform"
             >
-              <Box className="w-6 h-6 text-primary-600" />
+              <Box className="w-6 h-6 text-primary-600" aria-hidden="true" />
               <span className="font-medium text-gray-900">View Boxes</span>
             </Link>
             <Link
               href="/items"
               className="bg-white rounded-xl p-4 shadow-sm flex items-center space-x-3 active:scale-95 transition-transform"
             >
-              <Package className="w-6 h-6 text-primary-600" />
+              <Package className="w-6 h-6 text-primary-600" aria-hidden="true" />
               <span className="font-medium text-gray-900">View Items</span>
             </Link>
           </div>
@@ -128,7 +139,7 @@ export default function Home() {
                 >
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
-                      <Layers className="w-5 h-5 text-primary-600" />
+                      <Layers className="w-5 h-5 text-primary-600" aria-hidden="true" />
                     </div>
                     <div>
                       <div className="font-semibold text-gray-900 capitalize">{floor.name}</div>
@@ -137,7 +148,7 @@ export default function Home() {
                       )}
                     </div>
                   </div>
-                  <MapPin className="w-5 h-5 text-gray-400" />
+                  <MapPin className="w-5 h-5 text-gray-400" aria-hidden="true" />
                 </Link>
               ))}
             </div>

@@ -64,12 +64,12 @@ export default function BoxesPage() {
             onClick={() => router.back()}
             className="flex items-center space-x-2 text-gray-600 mb-3"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
             <span>Back</span>
           </button>
           <h1 className="text-2xl font-bold text-gray-900 mb-3">All Boxes</h1>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
             <input
               type="text"
               placeholder="Search boxes..."
@@ -92,7 +92,7 @@ export default function BoxesPage() {
           </div>
         ) : filteredBoxes.length === 0 ? (
           <div className="bg-white rounded-xl p-8 text-center shadow-sm">
-            <Box className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+            <Box className="w-12 h-12 text-gray-400 mx-auto mb-3" aria-hidden="true" />
             <p className="text-gray-500">
               {searchQuery ? 'No boxes found matching your search' : 'No boxes yet'}
             </p>
@@ -108,10 +108,10 @@ export default function BoxesPage() {
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-3 flex-1">
                     <div className="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Box className="w-5 h-5 text-primary-600" />
+                      <Box className="w-5 h-5 text-primary-600" aria-hidden="true" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-gray-900 mb-1">
+                      <div className="font-semibold text-gray-900 mb-1 truncate">
                         {box.box_name || `Box ${box.nfc_tag_id.slice(0, 8)}`}
                       </div>
                       <div className="text-sm text-gray-600 space-y-0.5">
