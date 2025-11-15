@@ -28,10 +28,17 @@ export default function Home() {
   const fetchFloors = async () => {
     try {
       const res = await fetch('/api/floors')
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ error: 'Failed to fetch floors' }))
+        console.error('Error fetching floors:', errorData)
+        setFloors([])
+        return
+      }
       const data = await res.json()
       setFloors(data)
     } catch (error) {
       console.error('Error fetching floors:', error)
+      setFloors([])
     } finally {
       setLoading(false)
     }
@@ -40,10 +47,17 @@ export default function Home() {
   const fetchStats = async () => {
     try {
       const res = await fetch('/api/stats')
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({ error: 'Failed to fetch stats' }))
+        console.error('Error fetching stats:', errorData)
+        setStats({ totalBoxes: 0, totalItems: 0, totalRooms: 0 })
+        return
+      }
       const data = await res.json()
       setStats(data)
     } catch (error) {
       console.error('Error fetching stats:', error)
+      setStats({ totalBoxes: 0, totalItems: 0, totalRooms: 0 })
     }
   }
 
