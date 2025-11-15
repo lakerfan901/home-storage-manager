@@ -109,10 +109,21 @@ CREATE INDEX idx_item_group_members_group_id ON item_group_members(group_id);
 CREATE INDEX idx_item_links_item_id_1 ON item_links(item_id_1);
 CREATE INDEX idx_item_links_item_id_2 ON item_links(item_id_2);
 -- Unique index to prevent duplicate bidirectional links
--- Using a function to normalize the pair order
+-- Create a function to normalize the pair order
+CREATE OR REPLACE FUNCTION normalize_item_link_pair(id1 UUID, id2 UUID)
+RETURNS UUID[] AS $$
+BEGIN
+    IF id1 < id2 THEN
+        RETURN ARRAY[id1, id2];
+    ELSE
+        RETURN ARRAY[id2, id1];
+    END IF;
+END;
+$$ LANGUAGE plpgsql IMMUTABLE;
+
+-- Create unique index using the function
 CREATE UNIQUE INDEX idx_item_links_unique_pair ON item_links(
-    CASE WHEN item_id_1 < item_id_2 THEN item_id_1 ELSE item_id_2 END,
-    CASE WHEN item_id_1 < item_id_2 THEN item_id_2 ELSE item_id_1 END
+    (normalize_item_link_pair(item_id_1, item_id_2))
 );
 
 -- Create a function to automatically update updated_at timestamp
