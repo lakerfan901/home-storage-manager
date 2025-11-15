@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
-import { Home, Box } from 'lucide-react'
+import { Home, Box, Settings } from 'lucide-react'
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -43,6 +43,13 @@ export default function RootLayout({
             >
               <Box className="w-5 h-5" aria-hidden="true" />
               <span>Boxes</span>
+            </Link>
+            <Link
+              href="/settings"
+              className="flex flex-col items-center space-y-1 px-4 py-2 text-xs text-gray-600 active:text-primary-600 transition-colors"
+            >
+              <Settings className="w-5 h-5" aria-hidden="true" />
+              <span>Settings</span>
             </Link>
           </div>
         </footer>

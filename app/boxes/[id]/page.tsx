@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { ArrowLeft, Package, Plus, Edit2, Trash2 } from 'lucide-react'
+import { ArrowLeft, Package, Plus, Edit2, Trash2, X } from 'lucide-react'
 
 interface Item {
   id: string
@@ -28,6 +28,7 @@ export default function BoxPage() {
   const [items, setItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(true)
   const [showAddItem, setShowAddItem] = useState(false)
+  const [editingItem, setEditingItem] = useState<Item | null>(null)
   const [newItem, setNewItem] = useState({ name: '', description: '', quantity: 1, tag: '' })
 
   useEffect(() => {
@@ -69,6 +70,34 @@ export default function BoxPage() {
     }
   }
 
+  const handleEditItem = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!editingItem) return
+    try {
+      const res = await fetch(`/api/items/${editingItem.id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: newItem.name,
+          description: newItem.description,
+          quantity: parseInt(newItem.quantity.toString()) || 1,
+          tag: newItem.tag,
+        }),
+      })
+      if (res.ok) {
+        setEditingItem(null)
+        setNewItem({ name: '', description: '', quantity: 1, tag: '' })
+        fetchBox()
+      } else {
+        const error = await res.json()
+        alert(error.error || 'Failed to update item')
+      }
+    } catch (error) {
+      console.error('Error updating item:', error)
+      alert('Failed to update item')
+    }
+  }
+
   const handleDeleteItem = async (itemId: string) => {
     if (!confirm('Are you sure you want to delete this item?')) return
     try {
@@ -79,6 +108,12 @@ export default function BoxPage() {
     } catch (error) {
       console.error('Error deleting item:', error)
     }
+  }
+
+  const startEditItem = (item: Item) => {
+    setEditingItem(item)
+    setNewItem({ name: item.name, description: item.description || '', quantity: item.quantity, tag: item.tag || '' })
+    setShowAddItem(false)
   }
 
   return (
@@ -115,10 +150,26 @@ export default function BoxPage() {
           </div>
         ) : (
           <>
-            {/* Add Item Form */}
-            {showAddItem && (
+            {/* Add/Edit Item Form */}
+            {(showAddItem || editingItem) && (
               <div className="bg-white rounded-xl p-4 shadow-sm mb-4">
-                <form onSubmit={handleAddItem} className="space-y-3">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-md font-semibold text-gray-900">
+                    {editingItem ? 'Edit Item' : 'Add Item'}
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setShowAddItem(false)
+                      setEditingItem(null)
+                      setNewItem({ name: '', description: '', quantity: 1, tag: '' })
+                    }}
+                    className="p-1 text-gray-400 hover:text-gray-600"
+                    aria-label="Close"
+                  >
+                    <X className="w-5 h-5" aria-hidden="true" />
+                  </button>
+                </div>
+                <form onSubmit={editingItem ? handleEditItem : handleAddItem} className="space-y-3">
                   <input
                     type="text"
                     placeholder="Item name *"
@@ -158,12 +209,13 @@ export default function BoxPage() {
                       type="submit"
                       className="flex-1 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium active:scale-95"
                     >
-                      Add Item
+                      {editingItem ? 'Update' : 'Add'} Item
                     </button>
                     <button
                       type="button"
                       onClick={() => {
                         setShowAddItem(false)
+                        setEditingItem(null)
                         setNewItem({ name: '', description: '', quantity: 1, tag: '' })
                       }}
                       className="px-4 py-2 border border-gray-300 rounded-lg font-medium active:scale-95"
@@ -180,7 +232,7 @@ export default function BoxPage() {
               <h2 className="text-lg font-semibold text-gray-900">
                 Items {items.length > 0 && `(${items.length})`}
               </h2>
-              {!showAddItem && (
+              {!showAddItem && !editingItem && (
                 <button
                   onClick={() => setShowAddItem(true)}
                   className="flex items-center space-x-2 bg-primary-600 text-white px-4 py-2 rounded-lg font-medium active:scale-95"
@@ -221,13 +273,22 @@ export default function BoxPage() {
                         <div className="text-sm text-gray-600 truncate">{item.description}</div>
                       )}
                     </div>
-                    <button
-                      onClick={() => handleDeleteItem(item.id)}
-                      className="p-2 text-red-500 active:scale-95 flex-shrink-0"
-                      aria-label="Delete item"
-                    >
-                      <Trash2 className="w-5 h-5" aria-hidden="true" />
-                    </button>
+                    <div className="flex items-center space-x-2 flex-shrink-0">
+                      <button
+                        onClick={() => startEditItem(item)}
+                        className="p-2 text-primary-600 active:scale-95"
+                        aria-label="Edit item"
+                      >
+                        <Edit2 className="w-5 h-5" aria-hidden="true" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteItem(item.id)}
+                        className="p-2 text-red-500 active:scale-95"
+                        aria-label="Delete item"
+                      >
+                        <Trash2 className="w-5 h-5" aria-hidden="true" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
